@@ -7,6 +7,7 @@
 		"dev": "remix dev --manual -c \"node server.js\"",
 		"start": "cross-env NODE_ENV=production node ./server.js",
 		"test": "vitest",
+		"plop": "tsx ./node_modules/plop/bin/plop.js",
 		"typecheck": "tsc"
 	},
 	"dependencies": {
@@ -33,6 +34,7 @@
 		"@remix-run/dev": "^1.19.2",
 		"@remix-run/eslint-config": "^1.19.2",
 		"@testing-library/jest-dom": "^5.17.0",
+		"@testing-library/react": "^14.0.0",
 		"@types/compression": "^1.7.2",
 		"@types/express": "^4.17.17",
 		"@types/morgan": "^1.9.4",
@@ -43,8 +45,11 @@
 		"chokidar": "^3.5.3",
 		"eslint": "^8.38.0",
 		"happy-dom": "^10.9.0",
+		"plop": "^3.1.2",
 		"prettier": "3.0.1",
-		"typescript": "^5.0.4",
+		"ts-node": "^10.9.1",
+		"tsx": "^3.12.7",
+		"typescript": "^5.1.6",
 		"vite": "^4.4.9",
 		"vite-tsconfig-paths": "^4.2.0",
 		"vitest": "^0.34.1"
