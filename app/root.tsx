@@ -1,4 +1,4 @@
-import { ChakraProvider, Box, Heading } from "@chakra-ui/react"
+import { ChakraProvider, Box, Heading, ColorModeScript } from "@chakra-ui/react"
 import {
 	Links,
 	LiveReload,
@@ -9,6 +9,7 @@ import {
 	V2_MetaFunction,
 	useCatch,
 } from "@remix-run/react"
+import theme from "./theme"
 
 export const meta: V2_MetaFunction = () => [
 	{
@@ -36,6 +37,7 @@ function Document({
 				<Links />
 			</head>
 			<body>
+				<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 				{children}
 				<ScrollRestoration />
 				<Scripts />

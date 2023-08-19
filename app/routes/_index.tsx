@@ -1,5 +1,6 @@
-import { Text } from "@chakra-ui/react"
 import type { V2_MetaFunction } from "@remix-run/node"
+
+import { Layout } from "~/components"
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -9,7 +10,5 @@ export const meta: V2_MetaFunction = () => {
 }
 
 export default function Index() {
-	return (
-		<Text>hai</Text>
-	)
+	return <Layout>hai</Layout>
 }
