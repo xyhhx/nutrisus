@@ -1,6 +1,7 @@
+import { Center, Container } from "@chakra-ui/react"
 import type { V2_MetaFunction } from "@remix-run/node"
 
-import { Layout } from "~/components"
+import { Layout, SearchBar } from "~/components"
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -9,6 +10,14 @@ export const meta: V2_MetaFunction = () => {
 	]
 }
 
-export default function Index() {
-	return <Layout>hai</Layout>
-}
+const Index = () => (
+	<Layout>
+		<Center h="100%">
+			<Container>
+				<SearchBar />
+			</Container>
+		</Center>
+	</Layout>
+)
+
+export default Index

@@ -29,13 +29,13 @@ const componentGenerator = ({ setGenerator }: NodePlopAPI) => setGenerator('comp
 		{
 			path: indexFile,
 			pattern: /\/\* @plop import injection \*\//g,
-			template: 'import {{ pascalCase name }} from \'./{{ pascalCase name }}\'\n',
+			template: 'import {{ pascalCase name }} from \'./{{ pascalCase name }}\'',
 			type: 'append',
 		},
 		{
 			path: indexFile,
 			pattern: /\/\* @plop export injection \*\//g,
-			template: '\t{{ pascalCase name }},\n',
+			template: '\t{{ pascalCase name }},',
 			type: 'append',
 		},
 	],

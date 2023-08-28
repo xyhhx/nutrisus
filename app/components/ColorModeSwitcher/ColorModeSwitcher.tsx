@@ -21,6 +21,7 @@ const ColorModeSwitcher = () => {
 		<IconButton
 			{...buttonProps}
 			onClick={handleClick}
+			variant="outline"
 		/>
 	)
 }
