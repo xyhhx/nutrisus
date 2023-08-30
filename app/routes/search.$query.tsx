@@ -1,7 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons"
 import {
 	Box,
-	Button,
 	ButtonGroup,
 	Card,
 	CardBody,
@@ -11,11 +10,8 @@ import {
 	Container,
 	Divider,
 	Flex,
-	HStack,
 	Heading,
 	IconButton,
-	LinkOverlay,
-	Progress,
 	SimpleGrid,
 	Spacer,
 	Spinner,
@@ -25,8 +21,8 @@ import {
 } from "@chakra-ui/react"
 import {
 	fetch,
-	HeadersFunction,
 	json,
+	redirect,
 	type LoaderArgs,
 	type V2_MetaFunction,
 } from "@remix-run/node"
@@ -54,6 +50,7 @@ const getSearchResults = async (query: string, page?: number) => {
 			},
 			body: JSON.stringify({
 				query,
+				// dataType: ["RC Legacy", "Foundation"],
 				pageNumber: page,
 			}),
 		},
@@ -76,8 +73,11 @@ export const loader = async ({ request, params: { query } }: LoaderArgs) => {
 			response: null,
 		})
 
-	const response = await getSearchResults(query, page)
+	if (!query) return redirect("/")
+
+	const response = await getSearchResults(query, parseInt(page))
 	const { currentPage, foods, totalHits, totalPages } = response
+
 	return json({
 		requestedPage: page,
 		query,
@@ -109,13 +109,8 @@ export const getPrevPagePath = (
 }
 
 const Search = () => {
-	const {
-		query,
-		currentPage,
-		foods,
-		totalHits,
-		totalPages,
-	} = useLoaderData<typeof loader>()
+	const { query, currentPage, foods, totalHits, totalPages } =
+		useLoaderData<typeof loader>()
 	const navigate = useNavigate()
 	const navigation = useNavigation()
 	const location = useLocation()
@@ -182,6 +177,7 @@ const Search = () => {
 								<Card
 									variant="outline"
 									key={fdcId}
+									onClick={() => navigate(`/details/${fdcId}`)}
 								>
 									<CardHeader justifyContent="space-between">
 										<Text
@@ -225,12 +221,14 @@ const Search = () => {
 								/>
 							</Link>
 						) : (
-							<IconButton
-								variant="ghost"
-								aria-label="Previous Page"
-								icon={<ArrowLeftIcon />}
-								disabled
-							/>
+							<Link to="javascript: void(0);">
+								<IconButton
+									variant="ghost"
+									aria-label="Previous Page"
+									icon={<ArrowLeftIcon />}
+									disabled
+								/>
+							</Link>
 						)}
 						<Center flex={1}>
 							<Text
@@ -249,13 +247,15 @@ const Search = () => {
 								/>
 							</Link>
 						) : (
-							<IconButton
-								flex={1}
-								variant="ghost"
-								aria-label="Next page"
-								icon={<ArrowRightIcon />}
-								disabled
-							/>
+							<Link to="javascript: void(0);">
+								<IconButton
+									flex={1}
+									variant="ghost"
+									aria-label="Next page"
+									icon={<ArrowRightIcon />}
+									disabled
+								/>
+							</Link>
 						)}
 					</ButtonGroup>
 				</Box>

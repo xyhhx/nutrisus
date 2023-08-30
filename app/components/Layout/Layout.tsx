@@ -1,5 +1,13 @@
 import type { ReactNode } from "react"
-import { Box, Center, Container, Flex, HStack, Spacer, Text } from "@chakra-ui/react"
+import {
+	Box,
+	Center,
+	Container,
+	Flex,
+	HStack,
+	Spacer,
+	Text,
+} from "@chakra-ui/react"
 
 import { ColorModeSwitcher, SearchBar } from "~/components"
 import { Link } from "@remix-run/react"
