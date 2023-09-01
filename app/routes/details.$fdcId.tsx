@@ -10,6 +10,10 @@ import {
 	HStack,
 	Heading,
 	SimpleGrid,
+	Stat,
+	StatGroup,
+	StatLabel,
+	StatNumber,
 	Text,
 } from "@chakra-ui/react"
 import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node"
@@ -45,35 +49,49 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 	let slices
 
 	switch (foodDetails.dataType) {
-		case "SC Legacy":
+		case "SR Legacy":
 			slices = {
 				calories: 8,
 				protein: 4,
 				totalFats: 5,
 				carbs: 9,
+				nitrogen: null,
+				ash: 6,
 				vitamins: [11, 21],
 				minerals: [22, 39],
 			}
 			break
 		case "Foundation":
+			const mineralsIndex = foodDetails.foodNutrients
+				?.map(({ nutrient }) => nutrient.name)
+				.indexOf("Minerals")
+			const vitaminsIndex = foodDetails.foodNutrients
+				?.map(({ nutrient }) => nutrient.name)
+				.indexOf("Vitamins and Other Components")
+
 			slices = {
 				calories: 2,
-				protein: 4,
-				totalFats: 5,
-				carbs: 8,
-				minerals: [11, 22],
-				vitamins: [23, 39],
+				protein: 5,
+				totalFats: 6,
+				carbs: 9,
+				nitrogen: 4,
+				ash: 7,
+				minerals: [mineralsIndex + 1, vitaminsIndex],
+				vitamins: [vitaminsIndex + 1, foodDetails.foodNutrients?.length],
 			}
 			break
 	}
 
+	if (!slices) throw new Error("Unkown dataType")
+
 	const calories = foodDetails.foodNutrients?.at(slices.calories)
 	const protein = foodDetails.foodNutrients?.at(slices.protein)
 	const totalFats = foodDetails.foodNutrients?.at(slices.totalFats)
-	const carbs = {
-		...foodDetails.foodNutrients?.at(slices.carbs),
-		...{ nutrient: { name: "Carbs", unitName: "g" } },
-	} as FoodNutrient
+	const carbs = foodDetails.foodNutrients?.at(slices.carbs)
+	const ash = foodDetails.foodNutrients?.at(slices.ash)
+	const nitrogen = slices.nitrogen
+		? foodDetails.foodNutrients?.at(slices.nitrogen)
+		: null
 
 	const vitamins = foodDetails.foodNutrients?.slice(...slices.vitamins)
 	const minerals = foodDetails.foodNutrients?.slice(...slices.minerals)
@@ -83,6 +101,8 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 		protein,
 		totalFats,
 		carbs,
+		nitrogen,
+		ash,
 		vitamins,
 		minerals,
 	}
@@ -95,13 +115,12 @@ const NutrientMacroCard = ({ nutrient }: { nutrient: FoodNutrient }) => (
 		maxW="12vw"
 	>
 		<CardBody>
-			<Text
-				fontSize="4xl"
-				fontWeight="black"
-			>
-				{nutrient.amount} {nutrient.nutrient.unitName}
-			</Text>
-			<Text>{nutrient.nutrient.name}</Text>
+			<Stat>
+				<StatLabel>{nutrient.nutrient.name}</StatLabel>
+				<StatNumber>
+					{nutrient.amount.toFixed(2)} {nutrient.nutrient.unitName}
+				</StatNumber>
+			</Stat>
 		</CardBody>
 	</Card>
 )
@@ -110,10 +129,21 @@ const Details = () => {
 	const data = useLoaderData<typeof loader>()
 
 	const { description } = data
-	const { calories, protein, totalFats, carbs, vitamins, minerals } =
-		getNutrientsFromFoodDetails(data)
+	const {
+		calories,
+		protein,
+		totalFats,
+		carbs,
+		nitrogen,
+		ash,
+		vitamins,
+		minerals,
+	} = getNutrientsFromFoodDetails(data)
+	const proteinCals = parseInt(protein?.amount * 4)
+	const fatCals = parseInt(totalFats?.amount * 9)
+	const carbCals = parseInt(carbs?.amount * 4)
 
-	console.log({ vitamins, minerals })
+	console.log({ ash })
 
 	console.log(
 		data.foodNutrients?.map(({ nutrient }, i) => [i, nutrient.name]).join("\n"),
@@ -142,14 +172,51 @@ const Details = () => {
 							<Heading as="h3">Summary</Heading>
 						</CardHeader>
 						<CardBody>
+							<Card
+								// variant="outline"
+								variant="elevated"
+								boxShadow={0}
+								mb={2}
+							>
+								<CardBody>
+									<StatGroup alignItems="center">
+										<Stat>
+											<StatLabel fontSize="xl">Calories</StatLabel>
+											<StatNumber fontSize="xxx-large">
+												{parseInt(calories?.amount)}{" "}
+												{calories?.nutrient.unitName}
+											</StatNumber>
+										</Stat>
+										<Card
+											flex={1}
+											h="100%"
+											variant="elevated"
+											boxShadow={0}
+										>
+											<CardBody>
+												<Text>{fatCals} calories from fat</Text>
+												<Text>{proteinCals} calories from protein</Text>
+												<Text>{carbCals} calories from carbs</Text>
+											</CardBody>
+										</Card>
+									</StatGroup>
+								</CardBody>
+							</Card>
 							<SimpleGrid
 								columns={2}
 								spacing={2}
 							>
-								{calories && <NutrientMacroCard nutrient={calories} />}
 								{protein && <NutrientMacroCard nutrient={protein} />}
 								{totalFats && <NutrientMacroCard nutrient={totalFats} />}
 								{carbs && <NutrientMacroCard nutrient={carbs} />}
+							</SimpleGrid>
+							<Divider my={4} />
+							<SimpleGrid
+								columns={2}
+								spacing={2}
+							>
+								{nitrogen && <NutrientMacroCard nutrient={nitrogen} />}
+								{ash && <NutrientMacroCard nutrient={ash} />}
 							</SimpleGrid>
 							<Center py={10}>
 								<Text>todo</Text>
@@ -158,6 +225,7 @@ const Details = () => {
 					</Card>
 					<Card
 						h="100%"
+						minW="30rem"
 						overflow="auto"
 					>
 						<CardHeader>
@@ -171,22 +239,22 @@ const Details = () => {
 								Vitamins
 							</Text>
 							<SimpleGrid columns={2}>
-								{vitamins.map((nutrient: FoodNutrient) => (
-									<>
-										<Text
-											fontSize="sm"
-											px={4}
-										>
-											{nutrient.nutrient.name}
-										</Text>
-										<Text
-											fontSize="sm"
-											px={4}
-										>
-											{nutrient.amount} {nutrient.nutrient.unitName}
-										</Text>
-									</>
-								))}
+								{vitamins?.map((nutrient: FoodNutrient) => [
+									<Text
+										fontSize="sm"
+										px={4}
+										key={`${nutrient.id}`}
+									>
+										{nutrient.nutrient.name}
+									</Text>,
+									<Text
+										fontSize="sm"
+										px={4}
+										key={`${nutrient.id}-val`}
+									>
+										{nutrient.amount} {nutrient.nutrient.unitName}
+									</Text>,
+								])}
 							</SimpleGrid>
 							<Text
 								fontSize="lg"
@@ -195,17 +263,19 @@ const Details = () => {
 								Minerals
 							</Text>
 							<SimpleGrid columns={2}>
-								{minerals.map((nutrient: FoodNutrient) => (
+								{minerals?.map((nutrient: FoodNutrient) => (
 									<>
 										<Text
 											fontSize="sm"
 											px={4}
+											key={`${nutrient.id}`}
 										>
 											{nutrient.nutrient.name}
 										</Text>
 										<Text
 											fontSize="sm"
 											px={4}
+											key={`${nutrient.id}-val`}
 										>
 											{nutrient.amount} {nutrient.nutrient.unitName}
 										</Text>
