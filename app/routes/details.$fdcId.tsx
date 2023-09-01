@@ -1,4 +1,5 @@
 import {
+	Badge,
 	Box,
 	Card,
 	CardBody,
@@ -10,14 +11,17 @@ import {
 	HStack,
 	Heading,
 	SimpleGrid,
+	Spacer,
 	Stat,
 	StatGroup,
 	StatLabel,
 	StatNumber,
 	Text,
+	VStack,
 } from "@chakra-ui/react"
 import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { ReactPropTypes } from "react"
 import { Layout } from "~/components"
 import { getEnvOrDie } from "~/utils"
 
@@ -51,12 +55,17 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 	switch (foodDetails.dataType) {
 		case "SR Legacy":
 			slices = {
-				calories: 8,
+				calories: 2,
 				protein: 4,
 				totalFats: 5,
-				carbs: 9,
+				carbs: 8,
+				fiber: 10,
+
 				nitrogen: null,
 				ash: 6,
+
+				water: 1,
+
 				vitamins: [11, 21],
 				minerals: [22, 39],
 			}
@@ -70,12 +79,14 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 				.indexOf("Vitamins and Other Components")
 
 			slices = {
-				calories: 2,
+				calories: 3,
 				protein: 5,
 				totalFats: 6,
 				carbs: 9,
 				nitrogen: 4,
 				ash: 7,
+				fiber: 10,
+				water: 1,
 				minerals: [mineralsIndex + 1, vitaminsIndex],
 				vitamins: [vitaminsIndex + 1, foodDetails.foodNutrients?.length],
 			}
@@ -89,6 +100,8 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 	const totalFats = foodDetails.foodNutrients?.at(slices.totalFats)
 	const carbs = foodDetails.foodNutrients?.at(slices.carbs)
 	const ash = foodDetails.foodNutrients?.at(slices.ash)
+	const fiber = foodDetails.foodNutrients?.at(slices.fiber)
+	const water = foodDetails.foodNutrients?.at(slices.water)
 	const nitrogen = slices.nitrogen
 		? foodDetails.foodNutrients?.at(slices.nitrogen)
 		: null
@@ -101,6 +114,8 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 		protein,
 		totalFats,
 		carbs,
+		water,
+		fiber,
 		nitrogen,
 		ash,
 		vitamins,
@@ -108,44 +123,76 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 	}
 }
 
-const NutrientMacroCard = ({ nutrient }: { nutrient: FoodNutrient }) => (
-	<Card
-		variant="outline"
-		minW="20rem"
-		maxW="12vw"
-	>
-		<CardBody>
-			<Stat>
-				<StatLabel>{nutrient.nutrient.name}</StatLabel>
-				<StatNumber>
-					{nutrient.amount.toFixed(2)} {nutrient.nutrient.unitName}
-				</StatNumber>
-			</Stat>
-		</CardBody>
-	</Card>
-)
+const NutrientMacroCard = ({
+	nutrient,
+	...restProps
+}: {
+	nutrient: FoodNutrient
+	restProps?: any
+}) =>
+	nutrient.amount && (
+		<Card
+			variant="outline"
+			minW="20rem"
+			maxW="12vw"
+			{...restProps}
+		>
+			<CardBody>
+				<Stat>
+					<StatLabel>{nutrient.nutrient.name}</StatLabel>
+					<StatNumber>
+						{nutrient.amount.toFixed(2)} {nutrient.nutrient.unitName}
+					</StatNumber>
+				</Stat>
+			</CardBody>
+		</Card>
+	)
 
 const Details = () => {
 	const data = useLoaderData<typeof loader>()
 
-	const { description } = data
+	const { description, dataType, foodPortions, nutrientConversionFactors } =
+		data
+
 	const {
+		water,
 		calories,
 		protein,
 		totalFats,
 		carbs,
+		fiber,
 		nitrogen,
 		ash,
 		vitamins,
 		minerals,
 	} = getNutrientsFromFoodDetails(data)
-	const proteinCals = parseInt(protein?.amount * 4)
-	const fatCals = parseInt(totalFats?.amount * 9)
-	const carbCals = parseInt(carbs?.amount * 4)
 
-	console.log({ ash })
+	const caloriesFromProximates = nutrientConversionFactors
+		? nutrientConversionFactors.find(
+				({ name }) => name === "Calories From Proximates",
+		  )
+		: null
+
+	const proteinCals = (
+		protein?.amount * (caloriesFromProximates?.proteinValue || 4)
+	).toFixed(0)
+	const fatCals = (
+		totalFats?.amount * (caloriesFromProximates?.fatValue || 9)
+	).toFixed(0)
+	const carbCals = (
+		carbs?.amount * (caloriesFromProximates?.carbohydrateValue || 4)
+	).toFixed(0)
+
+	// console.log(
+	// 	"calories calc",
+	// 	(fatCals / calories.amount) * 100 +
+	// 		(proteinCals / calories.amount) * 100 +
+	// 		(carbCals / calories.amount) * 100,
+	// )
+	console.log({ data })
 
 	console.log(
+		dataType,
 		data.foodNutrients?.map(({ nutrient }, i) => [i, nutrient.name]).join("\n"),
 	)
 	return (
@@ -155,8 +202,33 @@ const Details = () => {
 				h="100%"
 			>
 				<Container maxW="container.xl">
-					<Text fontSize="sm">Details for</Text>
-					<Heading>{description}</Heading>
+					<Flex w="100%">
+						<Box flex={1}>
+							<Text fontSize="sm">Details for</Text>
+							<Heading>{description}</Heading>
+						</Box>
+						<Spacer flex={1} />
+						<Flex
+							flex={1}
+							align="stretch"
+						>
+							<Box flex={1}>
+								<Text>Data source:</Text>
+								<Badge>{dataType}</Badge>
+							</Box>
+							<Box flex={1}>
+								<Text>Serving size:</Text>
+								{foodPortions ? (
+									<Text>
+										{foodPortions[0].amount} {foodPortions[0].modifier} (
+										{foodPortions[0].gramWeight} g)
+									</Text>
+								) : (
+									<Text>100 g</Text>
+								)}
+							</Box>
+						</Flex>
+					</Flex>
 					<Divider py={2} />
 				</Container>
 				<HStack
@@ -194,9 +266,18 @@ const Details = () => {
 											boxShadow={0}
 										>
 											<CardBody>
-												<Text>{fatCals} calories from fat</Text>
-												<Text>{proteinCals} calories from protein</Text>
-												<Text>{carbCals} calories from carbs</Text>
+												<Text>
+													{carbCals} calories from carbs (
+													{((carbCals / calories.amount) * 100).toFixed(1)}%)
+												</Text>
+												<Text>
+													{fatCals} calories from fat (
+													{((fatCals / calories.amount) * 100).toFixed(1)}%)
+												</Text>
+												<Text>
+													{proteinCals} calories from protein (
+													{((proteinCals / calories.amount) * 100).toFixed(1)}%)
+												</Text>
 											</CardBody>
 										</Card>
 									</StatGroup>
@@ -209,14 +290,34 @@ const Details = () => {
 								{protein && <NutrientMacroCard nutrient={protein} />}
 								{totalFats && <NutrientMacroCard nutrient={totalFats} />}
 								{carbs && <NutrientMacroCard nutrient={carbs} />}
+								{fiber && <NutrientMacroCard nutrient={fiber} />}
 							</SimpleGrid>
 							<Divider my={4} />
 							<SimpleGrid
-								columns={2}
+								columns={3}
 								spacing={2}
 							>
-								{nitrogen && <NutrientMacroCard nutrient={nitrogen} />}
-								{ash && <NutrientMacroCard nutrient={ash} />}
+								{water && (
+									<NutrientMacroCard
+										nutrient={water}
+										minW="9vw"
+										maxW="12vw"
+									/>
+								)}
+								{nitrogen && (
+									<NutrientMacroCard
+										nutrient={nitrogen}
+										minW="9vw"
+										maxW="12vw"
+									/>
+								)}
+								{ash && (
+									<NutrientMacroCard
+										nutrient={ash}
+										minW="9vw"
+										maxW="12vw"
+									/>
+								)}
 							</SimpleGrid>
 							<Center py={10}>
 								<Text>todo</Text>
@@ -263,24 +364,22 @@ const Details = () => {
 								Minerals
 							</Text>
 							<SimpleGrid columns={2}>
-								{minerals?.map((nutrient: FoodNutrient) => (
-									<>
-										<Text
-											fontSize="sm"
-											px={4}
-											key={`${nutrient.id}`}
-										>
-											{nutrient.nutrient.name}
-										</Text>
-										<Text
-											fontSize="sm"
-											px={4}
-											key={`${nutrient.id}-val`}
-										>
-											{nutrient.amount} {nutrient.nutrient.unitName}
-										</Text>
-									</>
-								))}
+								{minerals?.map((nutrient: FoodNutrient) => [
+									<Text
+										fontSize="sm"
+										px={4}
+										key={`${nutrient.id}`}
+									>
+										{nutrient.nutrient.name}
+									</Text>,
+									<Text
+										fontSize="sm"
+										px={4}
+										key={`${nutrient.id}-val`}
+									>
+										{nutrient.amount} {nutrient.nutrient.unitName}
+									</Text>,
+								])}
 							</SimpleGrid>
 						</CardBody>
 					</Card>
@@ -303,7 +402,7 @@ interface FoodDetails {
 		value: number
 		name: string
 	}[]
-	foodPortions?: []
+	foodPortions?: FoodPortion[]
 	publicationDate?: string
 	foodNutrients?: FoodNutrient[]
 	foodClass?: string
@@ -322,6 +421,7 @@ interface FoodDetails {
 	servingSizeUnit?: string
 	packageWeight?: string
 	foodUpdateLog?: FoodUpdateLog[]
+	nutrientConversionFactors?: NutrientConversionFactor[]
 	labelNutrients?: {
 		fat: {
 			value: number
@@ -433,4 +533,25 @@ interface FoodUpdateLog {
 		dataType: string
 		foodClass: string
 	}[]
+}
+interface FoodPortion {
+	id: number
+	gramWeight: number
+	sequenceNumber: number
+	amount: number
+	modifier: string
+	measureUnit: {
+		id: number
+		name: string
+		abbreviation: string
+	}
+}
+
+interface NutrientConversionFactor {
+	id: number
+	proteinValue: number
+	fatValue: number
+	carbohydrateValue: number
+	type: string
+	name: string
 }
