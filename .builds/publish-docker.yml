@@ -1,0 +1,12 @@
+image: alpine/edge
+packages:
+  - docker
+  - hut
+tasks:
+  - docker_login: |
+      cat ~/.docker_hub_login | docker login -u xyhhx --password-stdin
+  - build: |
+      cd noodleapp
+      docker build . -t noodleapp
+  - publish: |
+      docker login
