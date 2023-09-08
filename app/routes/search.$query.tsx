@@ -140,7 +140,7 @@ const Search = () => {
 							fontSize="sm"
 							opacity={0.75}
 						>
-							You searched for
+							Showing results for
 						</Text>
 						<Heading>{query}</Heading>
 					</Box>

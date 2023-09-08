@@ -1,10 +1,10 @@
-import { describe, it } from "vitest";
-import { render } from '@testing-library/react'
+import { describe, it } from "vitest"
+import { render } from "@testing-library/react"
 
-import GenericErrorBoundary from "./GenericErrorBoundary";
+import GenericErrorBoundary from "./GenericErrorBoundary"
 
-describe('GenericErrorBoundary', async () => {
-	it('exists', async () => {
+describe("GenericErrorBoundary", async () => {
+	it("exists", async () => {
 		render(<GenericErrorBoundary />)
 	})
 })

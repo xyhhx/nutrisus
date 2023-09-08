@@ -1,5 +1,5 @@
 /* @plop import injection */
-import GenericErrorBoundary from './GenericErrorBoundary'
+import GenericErrorBoundary from "./GenericErrorBoundary"
 import SearchBar from "./SearchBar"
 import ColorModeSwitcher from "./ColorModeSwitcher"
 import Layout from "./Layout"

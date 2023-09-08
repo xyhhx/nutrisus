@@ -1,2 +1,2 @@
-import GenericErrorBoundary from './GenericErrorBoundary'
+import GenericErrorBoundary from "./GenericErrorBoundary"
 export default GenericErrorBoundary
