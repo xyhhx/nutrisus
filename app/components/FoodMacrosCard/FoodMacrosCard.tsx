@@ -52,15 +52,15 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 		  )
 		: null
 
-	const proteinCals = (
-		protein?.amount * (caloriesFromProximates?.proteinValue || 4)
-	).toFixed(0)
-	const fatCals = (
-		totalFats?.amount * (caloriesFromProximates?.fatValue || 9)
-	).toFixed(0)
-	const carbCals = (
-		carbs?.amount * (caloriesFromProximates?.carbohydrateValue || 4)
-	).toFixed(0)
+	const proteinCals =
+		protein?.amount &&
+		(protein.amount * (caloriesFromProximates?.proteinValue || 4)).toFixed(0)
+	const fatCals =
+		totalFats?.amount &&
+		(totalFats.amount * (caloriesFromProximates?.fatValue || 9)).toFixed(0)
+	const carbCals =
+		carbs?.amount &&
+		(carbs.amount * (caloriesFromProximates?.carbohydrateValue || 4)).toFixed(0)
 
 	return (
 		<Card
@@ -79,12 +79,14 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 				>
 					<CardBody>
 						<StatGroup alignItems="center">
-							<Stat>
-								<StatLabel fontSize="xl">Calories</StatLabel>
-								<StatNumber fontSize="xxx-large">
-									{parseInt(calories?.amount)} {calories?.nutrient.unitName}
-								</StatNumber>
-							</Stat>
+							{calories?.amount && (
+								<Stat>
+									<StatLabel fontSize="xl">Calories</StatLabel>
+									<StatNumber fontSize="xxx-large">
+										{calories.amount.toFixed(0)} {calories?.nutrient.unitName}
+									</StatNumber>
+								</Stat>
+							)}
 							<Card
 								flex={1}
 								h="100%"

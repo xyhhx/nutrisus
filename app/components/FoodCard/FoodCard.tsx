@@ -1,15 +1,20 @@
+import { WarningTwoIcon } from '@chakra-ui/icons'
 import {
 	Card,
 	CardBody,
 	CardFooter,
 	CardHeader,
-	Center,
 	Divider,
+	HStack,
 	Spacer,
 	Tag,
 	Text,
+	Tooltip,
+	useToast,
 } from '@chakra-ui/react'
 import { useNavigate } from '@remix-run/react'
+
+const supportedDataTypes = ['SR Legacy', 'Foundation']
 
 const FoodCard = ({
 	food: {
@@ -22,11 +27,22 @@ const FoodCard = ({
 	},
 }: Props) => {
 	const navigate = useNavigate()
+	const toast = useToast()
+	const dataTypeIsSupported = supportedDataTypes.includes(dataType)
+	const handleClick = () => {
+		if (dataTypeIsSupported) navigate(`/details/${fdcId}`)
+		else
+			toast({
+				description: 'That food type is unsupported',
+				status: 'info',
+				isClosable: true,
+			})
+	}
 	return (
 		<Card
 			variant="outline"
 			key={fdcId}
-			onClick={() => navigate(`/details/${fdcId}`)}
+			onClick={handleClick}
 		>
 			<CardHeader justifyContent="space-between">
 				<Text
@@ -45,9 +61,16 @@ const FoodCard = ({
 			<Spacer />
 			<Divider />
 			<CardFooter justify="space-between">
-				<Center>
+				<HStack spacing={1}>
 					<Tag fontSize="xs">{dataType.toUpperCase()}</Tag>
-				</Center>
+					{!dataTypeIsSupported && (
+						<Tooltip label="This food type is currently unsupported">
+							<Tag fontSize="xs">
+								<WarningTwoIcon />
+							</Tag>
+						</Tooltip>
+					)}
+				</HStack>
 			</CardFooter>
 		</Card>
 	)
