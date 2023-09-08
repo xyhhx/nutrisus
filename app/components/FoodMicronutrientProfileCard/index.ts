@@ -1,0 +1,2 @@
+import FoodMicronutrientProfileCard from './FoodMicronutrientProfileCard'
+export default FoodMicronutrientProfileCard

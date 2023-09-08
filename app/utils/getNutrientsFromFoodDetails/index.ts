@@ -1,0 +1,2 @@
+import getNutrientsFromFoodDetails from './getNutrientsFromFoodDetails'
+export default getNutrientsFromFoodDetails
