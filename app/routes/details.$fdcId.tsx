@@ -17,12 +17,10 @@ import {
 	StatLabel,
 	StatNumber,
 	Text,
-	VStack,
 } from "@chakra-ui/react"
 import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { ReactPropTypes } from "react"
-import { Layout } from "~/components"
+import { GenericErrorBoundary, Layout } from "~/components"
 import { getEnvOrDie } from "~/utils"
 
 export const loader = async ({ request, params: { fdcId } }: LoaderArgs) => {
@@ -93,7 +91,7 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 			break
 	}
 
-	if (!slices) throw new Error("Unkown dataType")
+	if (!slices) throw new Error(`Unknown dataType ${foodDetails.dataType}`)
 
 	const calories = foodDetails.foodNutrients?.at(slices.calories)
 	const protein = foodDetails.foodNutrients?.at(slices.protein)
@@ -388,6 +386,8 @@ const Details = () => {
 		</Layout>
 	)
 }
+
+export const ErrorBoundary = GenericErrorBoundary
 
 export default Details
 

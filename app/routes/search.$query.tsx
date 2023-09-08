@@ -36,7 +36,7 @@ import {
 } from "@remix-run/react"
 import { useEffect } from "react"
 
-import { Layout } from "~/components"
+import { GenericErrorBoundary, Layout } from "~/components"
 import { getEnvOrDie } from "~/utils"
 
 const getSearchResults = async (query: string, page?: number) => {
@@ -263,6 +263,8 @@ const Search = () => {
 		</Layout>
 	)
 }
+
+export const ErrorBoundary = GenericErrorBoundary
 export default Search
 
 interface FoodCentralSearchResult {

@@ -1,4 +1,4 @@
-import { ChakraProvider, Box, Heading, ColorModeScript } from "@chakra-ui/react"
+import { ChakraProvider, Heading, ColorModeScript, Box } from "@chakra-ui/react"
 import {
 	Links,
 	LiveReload,
@@ -9,7 +9,9 @@ import {
 	V2_MetaFunction,
 	useCatch,
 } from "@remix-run/react"
+
 import theme from "./theme"
+import { GenericErrorBoundary } from "~/components"
 
 export const meta: V2_MetaFunction = () => [
 	{
@@ -59,6 +61,16 @@ export default function App() {
 	)
 }
 
+export function ErrorBoundary() {
+	return (
+		<Document title="Error!">
+			<ChakraProvider>
+				<GenericErrorBoundary />
+			</ChakraProvider>
+		</Document>
+	)
+}
+
 // How ChakraProvider should be used on CatchBoundary
 export function CatchBoundary() {
 	const caught = useCatch()
@@ -72,24 +84,6 @@ export function CatchBoundary() {
 						bg="purple.600"
 					>
 						[CatchBoundary]: {caught.status} {caught.statusText}
-					</Heading>
-				</Box>
-			</ChakraProvider>
-		</Document>
-	)
-}
-
-// How ChakraProvider should be used on ErrorBoundary
-export function ErrorBoundary({ error }: { error: Error }) {
-	return (
-		<Document title="Error!">
-			<ChakraProvider>
-				<Box>
-					<Heading
-						as="h1"
-						bg="blue.500"
-					>
-						[ErrorBoundary]: There was an error: {error.message}
 					</Heading>
 				</Box>
 			</ChakraProvider>
