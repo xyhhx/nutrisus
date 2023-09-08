@@ -1,17 +1,11 @@
 import {
-	Badge,
-	Box,
 	Card,
 	CardBody,
 	CardHeader,
 	Center,
-	Container,
 	Divider,
-	Flex,
-	HStack,
 	Heading,
 	SimpleGrid,
-	Spacer,
 	Stat,
 	StatGroup,
 	StatLabel,
@@ -67,6 +61,7 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 	const carbCals = (
 		carbs?.amount * (caloriesFromProximates?.carbohydrateValue || 4)
 	).toFixed(0)
+
 	return (
 		<Card
 			h="100%"

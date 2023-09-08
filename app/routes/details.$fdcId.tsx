@@ -9,7 +9,7 @@ import {
 	Spacer,
 	Text,
 } from '@chakra-ui/react'
-import { LoaderArgs, V2_MetaFunction, json } from '@remix-run/node'
+import { LoaderArgs, V2_MetaFunction, json, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import {
 	FoodMacrosCard,
@@ -20,6 +20,7 @@ import {
 import { getEnvOrDie } from '~/utils'
 
 export const loader = async ({ request, params: { fdcId } }: LoaderArgs) => {
+	if (!fdcId) return redirect('/')
 	const response: FoodDetails = await getFoodDetails(fdcId)
 	return json(response)
 }
