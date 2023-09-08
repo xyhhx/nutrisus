@@ -1,10 +1,10 @@
 import { describe, it } from 'vitest'
 import { render } from '@testing-library/react'
 
-import Layout from './Layout'
+import FoodCard from './FoodCard'
 
-describe('Layout', async () => {
+describe('FoodCard', async () => {
 	it('exists', async () => {
-		render(<Layout />)
+		render(<FoodCard />)
 	})
 })

@@ -1,4 +1,4 @@
-import { WarningTwoIcon } from "@chakra-ui/icons"
+import { WarningTwoIcon } from '@chakra-ui/icons'
 import {
 	Button,
 	ButtonGroup,
@@ -10,14 +10,14 @@ import {
 	Heading,
 	Text,
 	VStack,
-} from "@chakra-ui/react"
+} from '@chakra-ui/react'
 import {
 	isRouteErrorResponse,
 	useNavigate,
 	useRouteError,
-} from "@remix-run/react"
+} from '@remix-run/react'
 
-import { Layout } from "~/components"
+import { Layout } from '~/components'
 
 const GenericErrorBoundary = () => {
 	const error = useRouteError()
@@ -54,7 +54,7 @@ const GenericErrorBoundary = () => {
 
 							<Button
 								variant="ghost"
-								onClick={() => navigate(".", { replace: true })}
+								onClick={() => navigate('.', { replace: true })}
 							>
 								Refresh
 							</Button>

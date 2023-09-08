@@ -1,4 +1,4 @@
-import { ChakraProvider, Heading, ColorModeScript, Box } from "@chakra-ui/react"
+import { ChakraProvider, Heading, ColorModeScript, Box } from '@chakra-ui/react'
 import {
 	Links,
 	LiveReload,
@@ -8,25 +8,25 @@ import {
 	ScrollRestoration,
 	V2_MetaFunction,
 	useCatch,
-} from "@remix-run/react"
+} from '@remix-run/react'
 
-import theme from "./theme"
-import { GenericErrorBoundary } from "~/components"
+import theme from './theme'
+import { GenericErrorBoundary } from '~/components'
 
 export const meta: V2_MetaFunction = () => [
 	{
-		name: "charset",
-		value: "utf-8",
+		name: 'charset',
+		value: 'utf-8',
 	},
 	{
-		name: "viewport",
-		value: "width=device-width,initial-scale=1",
+		name: 'viewport',
+		value: 'width=device-width,initial-scale=1',
 	},
 ]
 
 function Document({
 	children,
-	title = "App title",
+	title = 'App title',
 }: {
 	children: React.ReactNode
 	title?: string

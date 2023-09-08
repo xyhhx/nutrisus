@@ -1,2 +1,2 @@
-import getEnvOrDie from "./getEnvOrDie"
+import getEnvOrDie from './getEnvOrDie'
 export default getEnvOrDie

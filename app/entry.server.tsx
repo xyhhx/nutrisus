@@ -1,13 +1,13 @@
-import { PassThrough } from "stream"
+import { PassThrough } from 'stream'
 
-import createEmotionCache from "@emotion/cache"
-import { CacheProvider as EmotionCacheProvider } from "@emotion/react"
-import createEmotionServer from "@emotion/server/create-instance"
-import type { AppLoadContext, EntryContext } from "@remix-run/node"
-import { Response } from "@remix-run/node"
-import { RemixServer } from "@remix-run/react"
-import isbot from "isbot"
-import { renderToPipeableStream } from "react-dom/server"
+import createEmotionCache from '@emotion/cache'
+import { CacheProvider as EmotionCacheProvider } from '@emotion/react'
+import createEmotionServer from '@emotion/server/create-instance'
+import type { AppLoadContext, EntryContext } from '@remix-run/node'
+import { Response } from '@remix-run/node'
+import { RemixServer } from '@remix-run/react'
+import isbot from 'isbot'
+import { renderToPipeableStream } from 'react-dom/server'
 
 const ABORT_DELAY = 5000
 
@@ -18,7 +18,7 @@ const handleRequest = (
 	remixContext: EntryContext,
 	loadContext: AppLoadContext,
 ) =>
-	isbot(request.headers.get("user-agent"))
+	isbot(request.headers.get('user-agent'))
 		? handleBotRequest(
 				request,
 				responseStatusCode,
@@ -41,7 +41,7 @@ const handleBotRequest = (
 ) =>
 	new Promise((resolve, reject) => {
 		let didError = false
-		const emotionCache = createEmotionCache({ key: "css" })
+		const emotionCache = createEmotionCache({ key: 'css' })
 
 		const { pipe, abort } = renderToPipeableStream(
 			<EmotionCacheProvider value={emotionCache}>
@@ -58,7 +58,7 @@ const handleBotRequest = (
 					const bodyWithStyles = emotionServer.renderStylesToNodeStream()
 					reactBody.pipe(bodyWithStyles)
 
-					responseHeaders.set("Content-Type", "text/html")
+					responseHeaders.set('Content-Type', 'text/html')
 
 					resolve(
 						new Response(bodyWithStyles, {
@@ -91,7 +91,7 @@ const handleBrowserRequest = (
 ) =>
 	new Promise((resolve, reject) => {
 		let didError = false
-		const emotionCache = createEmotionCache({ key: "css" })
+		const emotionCache = createEmotionCache({ key: 'css' })
 
 		const { pipe, abort } = renderToPipeableStream(
 			<EmotionCacheProvider value={emotionCache}>
@@ -108,7 +108,7 @@ const handleBrowserRequest = (
 					const bodyWithStyles = emotionServer.renderStylesToNodeStream()
 					reactBody.pipe(bodyWithStyles)
 
-					responseHeaders.set("Content-Type", "text/html")
+					responseHeaders.set('Content-Type', 'text/html')
 
 					resolve(
 						new Response(bodyWithStyles, {

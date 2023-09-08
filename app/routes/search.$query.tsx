@@ -1,31 +1,24 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons"
+import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons'
 import {
 	Box,
 	ButtonGroup,
-	Card,
-	CardBody,
-	CardFooter,
-	CardHeader,
 	Center,
 	Container,
 	Divider,
 	Flex,
 	Heading,
 	IconButton,
-	SimpleGrid,
-	Spacer,
 	Spinner,
-	Tag,
 	Text,
 	VStack,
-} from "@chakra-ui/react"
+} from '@chakra-ui/react'
 import {
 	fetch,
 	json,
 	redirect,
 	type LoaderArgs,
 	type V2_MetaFunction,
-} from "@remix-run/node"
+} from '@remix-run/node'
 import {
 	Link,
 	Location,
@@ -33,20 +26,20 @@ import {
 	useLocation,
 	useNavigate,
 	useNavigation,
-} from "@remix-run/react"
-import { useEffect } from "react"
+} from '@remix-run/react'
+import { useEffect } from 'react'
 
-import { GenericErrorBoundary, Layout } from "~/components"
-import { getEnvOrDie } from "~/utils"
+import { FoodCardList, GenericErrorBoundary, Layout } from '~/components'
+import { getEnvOrDie } from '~/utils'
 
 const getSearchResults = async (query: string, page?: number) => {
-	const apiKey = getEnvOrDie("FOOD_DATA_CENTRAL_API_KEY")
+	const apiKey = getEnvOrDie('FOOD_DATA_CENTRAL_API_KEY')
 	const result = await fetch(
 		`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${apiKey}`,
 		{
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
 				query,
@@ -60,7 +53,7 @@ const getSearchResults = async (query: string, page?: number) => {
 }
 
 export const loader = async ({ request, params: { query } }: LoaderArgs) => {
-	const page = new URL(request.url).searchParams.get("page")
+	const page = new URL(request.url).searchParams.get('page')
 	if (!page)
 		return json({
 			requestedPage: 0,
@@ -73,7 +66,7 @@ export const loader = async ({ request, params: { query } }: LoaderArgs) => {
 			response: null,
 		})
 
-	if (!query) return redirect("/")
+	if (!query) return redirect('/')
 
 	const response = await getSearchResults(query, parseInt(page))
 	const { currentPage, foods, totalHits, totalPages } = response
@@ -90,7 +83,7 @@ export const loader = async ({ request, params: { query } }: LoaderArgs) => {
 }
 
 export const meta: V2_MetaFunction = () => {
-	return [{ title: "Search results" }, { name: "description", content: "" }]
+	return [{ title: 'Search results' }, { name: 'description', content: '' }]
 }
 
 export const getNextPagePath = (
@@ -158,52 +151,8 @@ const Search = () => {
 					</VStack>
 				</Flex>
 				<Divider my={4} />
-				{navigation.state === "idle" ? (
-					<SimpleGrid
-						spacing={4}
-						flex={1}
-						overflow="auto"
-						templateColumns="repeat(auto-fill, minmax(25rem, 1fr))"
-					>
-						{foods.map(
-							({
-								fdcId,
-								additionalDescriptions,
-								brandName,
-								brandOwner,
-								description,
-								dataType,
-							}) => (
-								<Card
-									variant="outline"
-									key={fdcId}
-									onClick={() => navigate(`/details/${fdcId}`)}
-								>
-									<CardHeader justifyContent="space-between">
-										<Text
-											fontWeight={700}
-											fontSize="lg"
-											noOfLines={2}
-										>
-											{description}
-										</Text>
-									</CardHeader>
-									<CardBody>
-										<Text fontSize="small">{additionalDescriptions}</Text>
-										<Text fontSize="small">{brandName}</Text>
-										<Text fontSize="small">{brandOwner}</Text>
-									</CardBody>
-									<Spacer />
-									<Divider />
-									<CardFooter justify="space-between">
-										<Center>
-											<Tag fontSize="xs">{dataType.toUpperCase()}</Tag>
-										</Center>
-									</CardFooter>
-								</Card>
-							),
-						)}
-					</SimpleGrid>
+				{navigation.state === 'idle' ? (
+					<FoodCardList foods={foods} />
 				) : (
 					<Center flex={1}>
 						<Spinner />
@@ -266,75 +215,3 @@ const Search = () => {
 
 export const ErrorBoundary = GenericErrorBoundary
 export default Search
-
-interface FoodCentralSearchResult {
-	totalHits: number
-	currentPage: number
-	totalPages: number
-	pageList: number[]
-	foodSearchCriteria: {
-		dataType: string[]
-		tradeChannel: string[]
-		query: string
-		generalSearchInput: string
-		brandOwner: string
-		pageNumber: number
-		sortBy: string
-		sortOrder: string
-		numberOfResultsPerPage: number
-		pageSize: number
-		requireAllWords: false
-		startDate: string
-		endDate: string
-		tradeChannels: string[]
-		foodTypes: string[]
-	}
-	foods: Food[]
-	aggregations: {
-		dataType: {
-			Branded: number
-		}
-		nutrients: {}
-	}
-}
-
-interface Food {
-	fdcId: number
-	brandOwner: string
-	brandName: string
-	description: string
-	additionalDescriptions?: string
-	scientificName: string
-	dataType: string
-	ndbNumber?: string
-	foodCode?: string
-	gtinUpc?: string
-	publishedDate: string
-	allHighlightFields: string
-	score: number
-}
-
-interface FoodNutrient {
-	type: "FoodNutrient"
-	id: number
-	nutrient: {
-		id: number
-		number: string
-		name: string
-		rank: number
-		unitName: string
-	}
-	nutrientAnalysisDetails: [
-		{
-			subSampleId: number
-			amount: number
-			nutrientId: number
-			nutrientAcquisitionDetails: [{}]
-			labMethodDescription: string
-			labMethodTechnique: string
-			labMethodOriginalDescription: string
-			labMethodLink: string
-		},
-	]
-	amount: number
-}

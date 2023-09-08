@@ -17,11 +17,11 @@ import {
 	StatLabel,
 	StatNumber,
 	Text,
-} from "@chakra-ui/react"
-import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
-import { GenericErrorBoundary, Layout } from "~/components"
-import { getEnvOrDie } from "~/utils"
+} from '@chakra-ui/react'
+import { LoaderArgs, V2_MetaFunction, json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
+import { GenericErrorBoundary, Layout } from '~/components'
+import { getEnvOrDie } from '~/utils'
 
 export const loader = async ({ request, params: { fdcId } }: LoaderArgs) => {
 	const response: FoodDetails = await getFoodDetails(fdcId)
@@ -29,17 +29,17 @@ export const loader = async ({ request, params: { fdcId } }: LoaderArgs) => {
 }
 
 export const meta: V2_MetaFunction = () => {
-	return [{ title: `Food details` }, { name: "description", content: "" }]
+	return [{ title: `Food details` }, { name: 'description', content: '' }]
 }
 
 const getFoodDetails = async (fdcId: string) => {
-	const apiKey = getEnvOrDie("FOOD_DATA_CENTRAL_API_KEY")
+	const apiKey = getEnvOrDie('FOOD_DATA_CENTRAL_API_KEY')
 	const result = await fetch(
 		`https://api.nal.usda.gov/fdc/v1/food/${fdcId}?api_key=${apiKey}`,
 		{
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
 		},
 	)
@@ -51,7 +51,7 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 	let slices
 
 	switch (foodDetails.dataType) {
-		case "SR Legacy":
+		case 'SR Legacy':
 			slices = {
 				calories: 2,
 				protein: 4,
@@ -68,13 +68,13 @@ const getNutrientsFromFoodDetails = (foodDetails: FoodDetails) => {
 				minerals: [22, 39],
 			}
 			break
-		case "Foundation":
+		case 'Foundation':
 			const mineralsIndex = foodDetails.foodNutrients
 				?.map(({ nutrient }) => nutrient.name)
-				.indexOf("Minerals")
+				.indexOf('Minerals')
 			const vitaminsIndex = foodDetails.foodNutrients
 				?.map(({ nutrient }) => nutrient.name)
-				.indexOf("Vitamins and Other Components")
+				.indexOf('Vitamins and Other Components')
 
 			slices = {
 				calories: 3,
@@ -167,7 +167,7 @@ const Details = () => {
 
 	const caloriesFromProximates = nutrientConversionFactors
 		? nutrientConversionFactors.find(
-				({ name }) => name === "Calories From Proximates",
+				({ name }) => name === 'Calories From Proximates',
 		  )
 		: null
 
@@ -191,7 +191,7 @@ const Details = () => {
 
 	console.log(
 		dataType,
-		data.foodNutrients?.map(({ nutrient }, i) => [i, nutrient.name]).join("\n"),
+		data.foodNutrients?.map(({ nutrient }, i) => [i, nutrient.name]).join('\n'),
 	)
 	return (
 		<Layout>
@@ -253,7 +253,7 @@ const Details = () => {
 										<Stat>
 											<StatLabel fontSize="xl">Calories</StatLabel>
 											<StatNumber fontSize="xxx-large">
-												{parseInt(calories?.amount)}{" "}
+												{parseInt(calories?.amount)}{' '}
 												{calories?.nutrient.unitName}
 											</StatNumber>
 										</Stat>
@@ -472,7 +472,7 @@ interface FoodDetails {
 }
 
 interface FoodNutrient {
-	type: "FoodNutrient"
+	type: 'FoodNutrient'
 	nutrient: {
 		id: number
 		number: string

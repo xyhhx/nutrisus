@@ -1,2 +1,2 @@
-import ColorModeSwitcher from "./ColorModeSwitcher"
+import ColorModeSwitcher from './ColorModeSwitcher'
 export default ColorModeSwitcher

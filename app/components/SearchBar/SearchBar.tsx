@@ -1,10 +1,10 @@
-import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
-import { Form } from "@remix-run/react"
-import { ChangeEventHandler, useState } from "react"
+import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { Form } from '@remix-run/react'
+import { ChangeEventHandler, useState } from 'react'
 
 const SearchBar = () => {
-	const [value, setValue] = useState("")
-	const buttonWidth = "4.5rem"
+	const [value, setValue] = useState('')
+	const buttonWidth = '4.5rem'
 
 	const handleChange: ChangeEventHandler<HTMLInputElement> = event => {
 		setValue(event.currentTarget.value)

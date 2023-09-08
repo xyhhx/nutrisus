@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { ReactNode } from 'react'
 import {
 	Box,
 	Center,
@@ -7,10 +7,10 @@ import {
 	HStack,
 	Spacer,
 	Text,
-} from "@chakra-ui/react"
+} from '@chakra-ui/react'
 
-import { ColorModeSwitcher, SearchBar } from "~/components"
-import { Link } from "@remix-run/react"
+import { ColorModeSwitcher, SearchBar } from '~/components'
+import { Link } from '@remix-run/react'
 
 interface LayoutProps {
 	children?: ReactNode

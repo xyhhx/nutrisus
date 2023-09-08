@@ -1,10 +1,10 @@
-import { describe, it } from "vitest"
-import { render } from "@testing-library/react"
+import { describe, it } from 'vitest'
+import { render } from '@testing-library/react'
 
-import ColorModeSwitcher from "./ColorModeSwitcher"
+import ColorModeSwitcher from './ColorModeSwitcher'
 
-describe("ColorModeSwitcher", async () => {
-	it("exists", async () => {
+describe('ColorModeSwitcher', async () => {
+	it('exists', async () => {
 		render(<ColorModeSwitcher />)
 	})
 })
