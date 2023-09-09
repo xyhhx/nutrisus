@@ -1,10 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest'
 
-
-import getNutrientsFromFoodDetails from "./getNutrientsFromFoodDetails";
+import getNutrientsFromFoodItem from './getNutrientsFromFoodDetails'
 
 describe('getNutrientsFromFoodDetails', async () => {
-it('is callable', async () => {
-expect(getNutrientsFromFoodDetails).toBeCallable()
-})
+	it('is callable', async () => {
+		expect(getNutrientsFromFoodItem).toBeCallable()
+	})
 })

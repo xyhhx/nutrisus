@@ -1,2 +1,2 @@
-import getNutrientsFromFoodDetails from './getNutrientsFromFoodDetails'
-export default getNutrientsFromFoodDetails
+import getNutrientsFromFoodItem from './getNutrientsFromFoodDetails'
+export default getNutrientsFromFoodItem

@@ -17,11 +17,12 @@ import {
 	GenericErrorBoundary,
 	Layout,
 } from '~/components'
+import { AnyFoodItem } from '~/types'
 import { getEnvOrDie } from '~/utils'
 
-export const loader = async ({ request, params: { fdcId } }: LoaderArgs) => {
+export const loader = async ({ params: { fdcId } }: LoaderArgs) => {
 	if (!fdcId) return redirect('/')
-	const response: FoodDetails = await getFoodDetails(fdcId)
+	const response: AnyFoodItem = await getFoodDetails(fdcId)
 	return json(response)
 }
 
@@ -47,6 +48,13 @@ const getFoodDetails = async (fdcId: string) => {
 const Details = () => {
 	const data = useLoaderData<typeof loader>()
 	const { description, dataType, foodPortions } = data
+
+	console.log(data)
+	console.log(
+		'nutrients',
+		data.foodNutrients.map(({ nutrient }) => nutrient.name),
+	)
+
 	return (
 		<Layout>
 			<Flex
@@ -70,7 +78,7 @@ const Details = () => {
 							</Box>
 							<Box flex={1}>
 								<Text>Serving size:</Text>
-								{foodPortions ? (
+								{foodPortions && foodPortions.length ? (
 									<Text>
 										{foodPortions[0].amount} {foodPortions[0].modifier} (
 										{foodPortions[0].gramWeight} g)
@@ -87,6 +95,8 @@ const Details = () => {
 					flex={1}
 					p={4}
 					overflowX="scroll"
+					alignItems="center"
+					justifyContent="center"
 				>
 					<FoodMacrosCard foodDetails={data} />
 					<FoodMicronutrientProfileCard foodDetails={data} />

@@ -12,6 +12,7 @@ import {
 	StatNumber,
 	Text,
 } from '@chakra-ui/react'
+import { FoodNutrient } from '~/fdc'
 
 import { getNutrientsFromFoodDetails } from '~/utils'
 
@@ -46,21 +47,23 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 	const { water, calories, protein, totalFats, carbs, fiber, nitrogen, ash } =
 		getNutrientsFromFoodDetails(foodDetails)
 
+	console.log({ totalFats })
+
 	const caloriesFromProximates = nutrientConversionFactors
 		? nutrientConversionFactors.find(
 				({ name }) => name === 'Calories From Proximates',
 		  )
 		: null
 
-	const proteinCals =
-		protein?.amount &&
-		(protein.amount * (caloriesFromProximates?.proteinValue || 4)).toFixed(0)
-	const fatCals =
-		totalFats?.amount &&
-		(totalFats.amount * (caloriesFromProximates?.fatValue || 9)).toFixed(0)
-	const carbCals =
-		carbs?.amount &&
-		(carbs.amount * (caloriesFromProximates?.carbohydrateValue || 4)).toFixed(0)
+	const proteinCals = (
+		protein?.amount * (caloriesFromProximates?.proteinValue || 4)
+	).toFixed(0)
+	const fatCals = (
+		totalFats?.amount * (caloriesFromProximates?.fatValue || 9)
+	).toFixed(0)
+	const carbCals = (
+		carbs?.amount * (caloriesFromProximates?.carbohydrateValue || 4)
+	).toFixed(0)
 
 	return (
 		<Card
@@ -147,9 +150,6 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 						/>
 					)}
 				</SimpleGrid>
-				<Center py={10}>
-					<Text>todo</Text>
-				</Center>
 			</CardBody>
 		</Card>
 	)

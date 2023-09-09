@@ -13,17 +13,18 @@ import {
 	useToast,
 } from '@chakra-ui/react'
 import { useNavigate } from '@remix-run/react'
+import { AnyFoodItem } from '~/types'
 
-const supportedDataTypes = ['SR Legacy', 'Foundation']
+const supportedDataTypes = ['Branded', 'SR Legacy', 'Foundation']
 
 const FoodCard = ({
 	food: {
 		fdcId,
-		additionalDescriptions,
-		brandName,
-		brandOwner,
+		additionalDescriptions = '',
+		brandName = '',
+		brandOwner = '',
 		description,
-		dataType,
+		dataType = '',
 	},
 }: Props) => {
 	const navigate = useNavigate()
@@ -77,7 +78,7 @@ const FoodCard = ({
 }
 
 interface Props {
-	food: Food
+	food: AnyFoodItem
 }
 
 export default FoodCard

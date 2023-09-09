@@ -6,6 +6,8 @@ import {
 	SimpleGrid,
 	Text,
 } from '@chakra-ui/react'
+import { FoodNutrient } from '~/fdc'
+import { AnyFoodItem } from '~/types'
 import { getNutrientsFromFoodDetails } from '~/utils'
 
 const FoodMicronutrientProfileCard = ({ foodDetails }: Props) => {
@@ -24,7 +26,7 @@ const FoodMicronutrientProfileCard = ({ foodDetails }: Props) => {
 					fontSize="lg"
 					py={2}
 				>
-					Vitamins
+					{minerals ? 'Vitamins' : 'Vitamins and Minerals'}
 				</Text>
 				<SimpleGrid columns={2}>
 					{vitamins?.map((nutrient: FoodNutrient) => [
@@ -44,37 +46,41 @@ const FoodMicronutrientProfileCard = ({ foodDetails }: Props) => {
 						</Text>,
 					])}
 				</SimpleGrid>
-				<Text
-					fontSize="lg"
-					py={2}
-				>
-					Minerals
-				</Text>
-				<SimpleGrid columns={2}>
-					{minerals?.map((nutrient: FoodNutrient) => [
+				{minerals && (
+					<>
 						<Text
-							fontSize="sm"
-							px={4}
-							key={`${nutrient.id}`}
+							fontSize="lg"
+							py={2}
 						>
-							{nutrient.nutrient.name}
-						</Text>,
-						<Text
-							fontSize="sm"
-							px={4}
-							key={`${nutrient.id}-val`}
-						>
-							{nutrient.amount} {nutrient.nutrient.unitName}
-						</Text>,
-					])}
-				</SimpleGrid>
+							Minerals
+						</Text>
+						<SimpleGrid columns={2}>
+							{minerals?.map((nutrient: FoodNutrient) => [
+								<Text
+									fontSize="sm"
+									px={4}
+									key={`${nutrient.id}`}
+								>
+									{nutrient.nutrient.name}
+								</Text>,
+								<Text
+									fontSize="sm"
+									px={4}
+									key={`${nutrient.id}-val`}
+								>
+									{nutrient.amount} {nutrient.nutrient.unitName}
+								</Text>,
+							])}
+						</SimpleGrid>
+					</>
+				)}
 			</CardBody>
 		</Card>
 	)
 }
 
 interface Props {
-	foodDetails: FoodDetails
+	foodDetails: AnyFoodItem
 }
 
 export default FoodMicronutrientProfileCard

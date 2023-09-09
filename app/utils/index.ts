@@ -1,9 +1,9 @@
 /* @plop import injection */
-import getNutrientsFromFoodDetails from './getNutrientsFromFoodDetails'
+import getNutrientsFromFoodItem from './getNutrientsFromFoodDetails'
 import getEnvOrDie from './getEnvOrDie'
 
 export {
 	/* @plop export injection */
-	getNutrientsFromFoodDetails,
+	getNutrientsFromFoodItem as getNutrientsFromFoodDetails,
 	getEnvOrDie,
 }
