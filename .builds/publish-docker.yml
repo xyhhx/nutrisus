@@ -6,7 +6,7 @@ secrets:
   - acff583f-01c1-4b56-9094-092bb140e6bd
 tasks:
   - docker_login: |
-      cat ~/.docker_hub_login | docker login -u xyhhx --password-stdin
+      docker login -u xyhhx -p $(cat ~/.docker_hub_token)
   - build: |
       cd noodleapp
       docker build . -t noodleapp
