@@ -1,12 +1,14 @@
 image: alpine/edge
 packages:
   - docker
-  - hut
 secrets:
-  - acff583f-01c1-4b56-9094-092bb140e6bd
+  - f17f24a9-ffbb-4366-9afc-b1a5cd9fe781
 tasks:
+  - set_up_docker: |
+      sudo addgroup build docker
+      sudo rc-service docker start
   - docker_login: |
-      docker login -u xyhhx -p $(cat ~/.docker_hub_token)
+      cat ~/.docker_hub_token | docker login -u xyhhx --password-stdin
   - build: |
       cd noodleapp
       docker build . -t noodleapp
