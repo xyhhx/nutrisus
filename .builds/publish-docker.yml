@@ -3,7 +3,7 @@ packages:
   - docker
   - hut
 secrets:
-  - 46f739e5-4538-45dd-a79f-bf173b7a2ed9
+  - acff583f-01c1-4b56-9094-092bb140e6bd
 tasks:
   - docker_login: |
       cat ~/.docker_hub_login | docker login -u xyhhx --password-stdin
