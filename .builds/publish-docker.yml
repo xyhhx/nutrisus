@@ -13,4 +13,6 @@ tasks:
       cat ~/.docker_hub_token | docker login -u xyhhx --password-stdin
   - build: |
       cd noodleapp
-      make publish
+      make build push
+  - release: |
+      make release
