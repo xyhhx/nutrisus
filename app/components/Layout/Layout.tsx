@@ -26,7 +26,7 @@ const Layout = ({ children }: LayoutProps) => {
 				<Flex py={4}>
 					<Center>
 						<Link to="/">
-							<Text fontWeight="900">Noodle App!</Text>
+							<Text fontWeight="900">Nutrisus</Text>
 						</Link>
 					</Center>
 					<Spacer />

@@ -5,8 +5,8 @@ import { Layout, SearchBar } from '~/components'
 
 export const meta: V2_MetaFunction = () => {
 	return [
-		{ title: 'Noodle' },
-		{ name: 'description', content: 'Welcome to Noodle!' },
+		{ title: 'Nutrisus' },
+		{ name: 'description', content: 'Nutrisus amogus' },
 	]
 }
 
