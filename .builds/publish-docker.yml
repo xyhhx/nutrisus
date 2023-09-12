@@ -13,4 +13,5 @@ tasks:
       cd noodleapp
       make build push
   - release: |
+      cd noodleapp
       make release
