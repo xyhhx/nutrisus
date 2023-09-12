@@ -1,6 +1,4 @@
 image: alpine/edge
-sources:
-  - https://git.sr.ht/~xyhhx/noodleapp#main
 packages:
   - docker
 secrets:
