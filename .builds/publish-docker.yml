@@ -14,4 +14,4 @@ tasks:
       make build push
   - release: |
       cd noodleapp
-      make release
+      "$(git branch --show-current)" =~ "main" && make release
