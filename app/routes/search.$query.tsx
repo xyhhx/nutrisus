@@ -30,7 +30,7 @@ import {
 import { useEffect } from 'react'
 
 import { FoodCardList, GenericErrorBoundary, Layout } from '~/components'
-import { getEnvOrDie } from '~/utils'
+import { extendMeta, getEnvOrDie } from '~/utils'
 
 const getSearchResults = async (query: string, page?: number) => {
 	const apiKey = getEnvOrDie('FOOD_DATA_CENTRAL_API_KEY')
@@ -82,9 +82,11 @@ export const loader = async ({ request, params: { query } }: LoaderArgs) => {
 	})
 }
 
-export const meta: V2_MetaFunction = () => {
-	return [{ title: 'Search results' }, { name: 'description', content: '' }]
-}
+export const meta: V2_MetaFunction = ({ matches }) =>
+	extendMeta(matches, [
+		{ title: 'Search results' },
+		{ name: 'description', content: '' },
+	])
 
 export const getNextPagePath = (
 	{ pathname, search }: Location,

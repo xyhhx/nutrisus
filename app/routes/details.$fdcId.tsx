@@ -18,7 +18,7 @@ import {
 	Layout,
 } from '~/components'
 import { AnyFoodItem } from '~/types'
-import { getEnvOrDie } from '~/utils'
+import { extendMeta, getEnvOrDie } from '~/utils'
 
 export const loader = async ({ params: { fdcId } }: LoaderArgs) => {
 	if (!fdcId) return redirect('/')
@@ -26,9 +26,16 @@ export const loader = async ({ params: { fdcId } }: LoaderArgs) => {
 	return json(response)
 }
 
-export const meta: V2_MetaFunction = () => {
-	return [{ title: `Food details` }, { name: 'description', content: '' }]
-}
+export const meta: V2_MetaFunction = ({ matches }) =>
+	extendMeta(matches, [
+		{
+			title: `Food details`,
+		},
+		{
+			name: 'description',
+			content: '',
+		},
+	])
 
 const getFoodDetails = async (fdcId: string) => {
 	const apiKey = getEnvOrDie('FOOD_DATA_CENTRAL_API_KEY')
@@ -61,7 +68,7 @@ const Details = () => {
 				direction="column"
 				h="100%"
 			>
-				<Container maxW="container.xl">
+				<Container maxW={{ xl: 'container.xl', lg: 'container.sm' }}>
 					<Flex w="100%">
 						<Box flex={1}>
 							<Text fontSize="sm">Details for</Text>
