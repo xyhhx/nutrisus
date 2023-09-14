@@ -172,7 +172,7 @@ const Search = () => {
 								/>
 							</Link>
 						) : (
-							<Link to="javascript: void(0);">
+							<Link to="#">
 								<IconButton
 									variant="ghost"
 									aria-label="Previous Page"
@@ -198,7 +198,7 @@ const Search = () => {
 								/>
 							</Link>
 						) : (
-							<Link to="javascript: void(0);">
+							<Link to="#">
 								<IconButton
 									flex={1}
 									variant="ghost"
