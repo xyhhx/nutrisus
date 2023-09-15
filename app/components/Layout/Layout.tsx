@@ -5,6 +5,7 @@ import {
 	Container,
 	Flex,
 	HStack,
+	Show,
 	Spacer,
 	Text,
 } from '@chakra-ui/react'
@@ -32,7 +33,9 @@ const Layout = ({ children }: LayoutProps) => {
 					<Spacer />
 					<Box>
 						<HStack>
-							<SearchBar />
+							<Show above="md">
+								<SearchBar />
+							</Show>
 							<ColorModeSwitcher />
 						</HStack>
 					</Box>

@@ -15,7 +15,7 @@ const FoodMicronutrientProfileCard = ({ foodDetails }: Props) => {
 	return (
 		<Card
 			h="100%"
-			minW="30rem"
+			minW="35vw"
 			overflow="auto"
 		>
 			<CardHeader>

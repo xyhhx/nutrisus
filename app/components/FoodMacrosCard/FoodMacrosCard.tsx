@@ -1,9 +1,11 @@
 import {
+	Box,
 	Card,
 	CardBody,
 	CardHeader,
 	Center,
 	Divider,
+	Flex,
 	Heading,
 	SimpleGrid,
 	Stat,
@@ -26,8 +28,6 @@ const NutrientMacroCard = ({
 	nutrient.amount && (
 		<Card
 			variant="outline"
-			minW="20rem"
-			maxW="12vw"
 			{...restProps}
 		>
 			<CardBody>
@@ -66,56 +66,50 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 	).toFixed(0)
 
 	return (
-		<Card
-			h="100%"
-			overflow="auto"
-		>
+		<Card h="100%">
 			<CardHeader>
 				<Heading as="h3">Summary</Heading>
 			</CardHeader>
 			<CardBody>
 				<Card
-					// variant="outline"
 					variant="elevated"
 					boxShadow={0}
 					mb={2}
 				>
 					<CardBody>
-						<StatGroup alignItems="center">
-							{calories?.amount && (
-								<Stat>
-									<StatLabel fontSize="xl">Calories</StatLabel>
-									<StatNumber fontSize="xxx-large">
-										{calories.amount.toFixed(0)} {calories?.nutrient.unitName}
-									</StatNumber>
-								</Stat>
-							)}
-							<Card
-								flex={1}
-								h="100%"
-								variant="elevated"
-								boxShadow={0}
+						<SimpleGrid columns={[1, null, 2]}>
+							<StatGroup alignItems="center">
+								{calories?.amount && (
+									<Stat>
+										<StatLabel fontSize="xl">Calories</StatLabel>
+										<StatNumber fontSize="xxx-large">
+											{calories.amount.toFixed(0)} {calories?.nutrient.unitName}
+										</StatNumber>
+									</Stat>
+								)}
+							</StatGroup>
+							<Flex
+								justifyContent="center"
+								direction="column"
 							>
-								<CardBody>
-									<Text>
-										{carbCals} calories from carbs (
-										{((carbCals / calories.amount) * 100).toFixed(1)}%)
-									</Text>
-									<Text>
-										{fatCals} calories from fat (
-										{((fatCals / calories.amount) * 100).toFixed(1)}%)
-									</Text>
-									<Text>
-										{proteinCals} calories from protein (
-										{((proteinCals / calories.amount) * 100).toFixed(1)}%)
-									</Text>
-								</CardBody>
-							</Card>
-						</StatGroup>
+								<Text>
+									{carbCals} calories from carbs (
+									{((carbCals / calories.amount) * 100).toFixed(1)}%)
+								</Text>
+								<Text>
+									{fatCals} calories from fat (
+									{((fatCals / calories.amount) * 100).toFixed(1)}%)
+								</Text>
+								<Text>
+									{proteinCals} calories from protein (
+									{((proteinCals / calories.amount) * 100).toFixed(1)}%)
+								</Text>
+							</Flex>
+						</SimpleGrid>
 					</CardBody>
 				</Card>
 				<SimpleGrid
-					columns={2}
+					columns={[1, null, null, null, 2]}
 					spacing={2}
 				>
 					{protein && <NutrientMacroCard nutrient={protein} />}
@@ -125,30 +119,12 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 				</SimpleGrid>
 				<Divider my={4} />
 				<SimpleGrid
-					columns={3}
+					columns={[2, null, null, null, 3]}
 					spacing={2}
 				>
-					{water && (
-						<NutrientMacroCard
-							nutrient={water}
-							minW="9vw"
-							maxW="12vw"
-						/>
-					)}
-					{nitrogen && (
-						<NutrientMacroCard
-							nutrient={nitrogen}
-							minW="9vw"
-							maxW="12vw"
-						/>
-					)}
-					{ash && (
-						<NutrientMacroCard
-							nutrient={ash}
-							minW="9vw"
-							maxW="12vw"
-						/>
-					)}
+					{water && <NutrientMacroCard nutrient={water} />}
+					{nitrogen && <NutrientMacroCard nutrient={nitrogen} />}
+					{ash && <NutrientMacroCard nutrient={ash} />}
 				</SimpleGrid>
 			</CardBody>
 		</Card>

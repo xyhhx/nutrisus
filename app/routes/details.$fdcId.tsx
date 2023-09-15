@@ -6,7 +6,9 @@ import {
 	Flex,
 	HStack,
 	Heading,
+	SimpleGrid,
 	Spacer,
+	Stack,
 	Text,
 } from '@chakra-ui/react'
 import { LoaderArgs, V2_MetaFunction, json, redirect } from '@remix-run/node'
@@ -18,7 +20,7 @@ import {
 	Layout,
 } from '~/components'
 import { AnyFoodItem } from '~/types'
-import { getEnvOrDie } from '~/utils'
+import { extendMeta, getEnvOrDie } from '~/utils'
 
 export const loader = async ({ params: { fdcId } }: LoaderArgs) => {
 	if (!fdcId) return redirect('/')
@@ -26,9 +28,16 @@ export const loader = async ({ params: { fdcId } }: LoaderArgs) => {
 	return json(response)
 }
 
-export const meta: V2_MetaFunction = () => {
-	return [{ title: `Food details` }, { name: 'description', content: '' }]
-}
+export const meta: V2_MetaFunction = ({ matches }) =>
+	extendMeta(matches, [
+		{
+			title: `Food details`,
+		},
+		{
+			name: 'description',
+			content: '',
+		},
+	])
 
 const getFoodDetails = async (fdcId: string) => {
 	const apiKey = getEnvOrDie('FOOD_DATA_CENTRAL_API_KEY')
@@ -61,13 +70,15 @@ const Details = () => {
 				direction="column"
 				h="100%"
 			>
-				<Container maxW="container.xl">
-					<Flex w="100%">
+				<Container maxW={{ xl: 'container.xl', lg: 'container.sm' }}>
+					<SimpleGrid
+						columns={[1, 2]}
+						spacing={4}
+					>
 						<Box flex={1}>
 							<Text fontSize="sm">Details for</Text>
 							<Heading>{description}</Heading>
 						</Box>
-						<Spacer flex={1} />
 						<Flex
 							flex={1}
 							align="stretch"
@@ -88,19 +99,17 @@ const Details = () => {
 								)}
 							</Box>
 						</Flex>
-					</Flex>
+					</SimpleGrid>
 					<Divider py={2} />
 				</Container>
-				<HStack
+				<Stack
+					direction={['column', 'row']}
 					flex={1}
 					p={4}
-					overflowX="scroll"
-					alignItems="center"
-					justifyContent="center"
 				>
 					<FoodMacrosCard foodDetails={data} />
 					<FoodMicronutrientProfileCard foodDetails={data} />
-				</HStack>
+				</Stack>
 			</Flex>
 		</Layout>
 	)

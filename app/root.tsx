@@ -18,10 +18,6 @@ export const meta: V2_MetaFunction = () => [
 		name: 'charset',
 		value: 'utf-8',
 	},
-	{
-		name: 'viewport',
-		value: 'width=device-width,initial-scale=1',
-	},
 ]
 
 function Document({
@@ -34,6 +30,10 @@ function Document({
 	return (
 		<html lang="en">
 			<head>
+				<meta
+					name="viewport"
+					content="width=device-width,initial-scale=1"
+				/>
 				<Meta />
 				<title>{title}</title>
 				<Links />
