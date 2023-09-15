@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { useNavigate } from '@remix-run/react'
 import { AnyFoodItem } from '~/types'
+import { FoodTypeBadge } from '~/components'
 
 const supportedDataTypes = ['Branded', 'SR Legacy', 'Foundation']
 
@@ -63,10 +64,13 @@ const FoodCard = ({
 			<Divider />
 			<CardFooter justify="space-between">
 				<HStack spacing={1}>
-					<Tag fontSize="xs">{dataType.toUpperCase()}</Tag>
+					<FoodTypeBadge dataSource={dataType} />
 					{!dataTypeIsSupported && (
 						<Tooltip label="This food type is currently unsupported">
-							<Tag fontSize="xs">
+							<Tag
+								fontSize="xs"
+								colorScheme="red"
+							>
 								<WarningTwoIcon />
 							</Tag>
 						</Tooltip>

@@ -1,4 +1,5 @@
 /* @plop import injection */
+import FoodTypeBadge from './FoodTypeBadge'
 import FoodMicronutrientProfileCard from './FoodMicronutrientProfileCard'
 import FoodMacrosCard from './FoodMacrosCard'
 import FoodCardList from './FoodCardList'
@@ -10,6 +11,7 @@ import Layout from './Layout'
 
 export {
 	/* @plop export injection */
+	FoodTypeBadge,
 	FoodMicronutrientProfileCard,
 	FoodMacrosCard,
 	FoodCardList,

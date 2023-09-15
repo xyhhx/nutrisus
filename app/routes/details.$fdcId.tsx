@@ -16,6 +16,7 @@ import { useLoaderData } from '@remix-run/react'
 import {
 	FoodMacrosCard,
 	FoodMicronutrientProfileCard,
+	FoodTypeBadge,
 	GenericErrorBoundary,
 	Layout,
 } from '~/components'
@@ -85,7 +86,7 @@ const Details = () => {
 						>
 							<Box flex={1}>
 								<Text>Data source:</Text>
-								<Badge>{dataType}</Badge>
+								<FoodTypeBadge dataSource={dataType} />
 							</Box>
 							<Box flex={1}>
 								<Text>Serving size:</Text>
