@@ -6,7 +6,9 @@ import {
 	Flex,
 	HStack,
 	Heading,
+	SimpleGrid,
 	Spacer,
+	Stack,
 	Text,
 } from '@chakra-ui/react'
 import { LoaderArgs, V2_MetaFunction, json, redirect } from '@remix-run/node'
@@ -98,16 +100,14 @@ const Details = () => {
 					</Flex>
 					<Divider py={2} />
 				</Container>
-				<HStack
+				<Stack
+					direction={['column', 'row']}
 					flex={1}
 					p={4}
-					overflowX="scroll"
-					alignItems="center"
-					justifyContent="center"
 				>
 					<FoodMacrosCard foodDetails={data} />
 					<FoodMicronutrientProfileCard foodDetails={data} />
-				</HStack>
+				</Stack>
 			</Flex>
 		</Layout>
 	)
