@@ -71,12 +71,14 @@ const Details = () => {
 				h="100%"
 			>
 				<Container maxW={{ xl: 'container.xl', lg: 'container.sm' }}>
-					<Flex w="100%">
+					<SimpleGrid
+						columns={[1, 2]}
+						spacing={4}
+					>
 						<Box flex={1}>
 							<Text fontSize="sm">Details for</Text>
 							<Heading>{description}</Heading>
 						</Box>
-						<Spacer flex={1} />
 						<Flex
 							flex={1}
 							align="stretch"
@@ -97,7 +99,7 @@ const Details = () => {
 								)}
 							</Box>
 						</Flex>
-					</Flex>
+					</SimpleGrid>
 					<Divider py={2} />
 				</Container>
 				<Stack
