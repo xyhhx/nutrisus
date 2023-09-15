@@ -8,7 +8,7 @@ const FoodCardList = ({ foods }: Props) => (
 		spacing={4}
 		flex={1}
 		overflow="auto"
-		templateColumns="repeat(auto-fill, minmax(25rem, 1fr))"
+		columns={[1, null, 2, null, 3]}
 	>
 		{foods.map(food => (
 			<FoodCard
