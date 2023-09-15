@@ -109,7 +109,7 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 					</CardBody>
 				</Card>
 				<SimpleGrid
-					columns={[1, null, null, null, 2]}
+					columns={[1, null, 2]}
 					spacing={2}
 				>
 					{protein && <NutrientMacroCard nutrient={protein} />}
@@ -119,7 +119,7 @@ const FoodMacrosCard = ({ foodDetails }: Props) => {
 				</SimpleGrid>
 				<Divider my={4} />
 				<SimpleGrid
-					columns={[2, null, null, null, 3]}
+					columns={[2, null, 4]}
 					spacing={2}
 				>
 					{water && <NutrientMacroCard nutrient={water} />}

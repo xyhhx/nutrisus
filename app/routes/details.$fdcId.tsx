@@ -103,7 +103,7 @@ const Details = () => {
 					<Divider py={2} />
 				</Container>
 				<Stack
-					direction={['column', 'row']}
+					direction={['column', null, null, 'row']}
 					flex={1}
 					p={4}
 				>
