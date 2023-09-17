@@ -54,7 +54,7 @@ export default function App() {
 
 	return (
 		<Document>
-			<ChakraProvider>
+			<ChakraProvider theme={theme}>
 				<Outlet />
 			</ChakraProvider>
 		</Document>
@@ -64,7 +64,7 @@ export default function App() {
 export function ErrorBoundary() {
 	return (
 		<Document title="Error!">
-			<ChakraProvider>
+			<ChakraProvider theme={theme}>
 				<GenericErrorBoundary />
 			</ChakraProvider>
 		</Document>
@@ -77,7 +77,7 @@ export function CatchBoundary() {
 
 	return (
 		<Document title={`${caught.status} ${caught.statusText}`}>
-			<ChakraProvider>
+			<ChakraProvider theme={theme}>
 				<Box>
 					<Heading
 						as="h1"
