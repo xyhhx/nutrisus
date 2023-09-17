@@ -45,6 +45,12 @@ const FoodCard = ({
 			variant="outline"
 			key={fdcId}
 			onClick={handleClick}
+			_hover={{
+				borderColor: 'rgba(127,127,127,0.5)',
+			}}
+			_focus={{
+				borderColor: 'rgba(127,127,127,0.5)',
+			}}
 		>
 			<CardHeader justifyContent="space-between">
 				<Text
